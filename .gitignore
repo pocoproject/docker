@@ -1,0 +1,4 @@
+*.build.out
+*.build.err
+*.test.out
+*.test.err

@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+
+  poco_ci:
+    # stripped-down, docker-optimized ubuntu
+    # see https://github.com/phusion/baseimage-docker
+    image: phusion/baseimage:0.10.0
+    container_name: ${POCO_CI_CONTAINER_NAME}
+    # disabled for baseimage, use this for other images
+    # (see note in volumes below)
+#    entrypoint: /entrypoint.sh
+    environment:
+      CONTAINER_NAME:         ${POCO_CI_CONTAINER_NAME}
+      CC:                     ${POCO_CC_COMPILER}
+      CXX:                    ${POCO_CXX_COMPILER}
+      POCO_COMPILER_VERSION:  ${POCO_COMPILER_VERSION}
+      POCO_COMPILER_PACKAGES: ${POCO_COMPILER_PACKAGES}
+      POCO_GIT_BRANCH:        ${POCO_GIT_BRANCH}
+      POCO_OMIT:              ${POCO_OMIT}
+      POCO_CONFIG:            ${POCO_CONFIG}
+
+#    network_mode: "host"
+
+    volumes:
+#       - "${COMPOSE_PROJECT_NAME}/entrypoint.sh:/entrypoint.sh"
+      # Note: the '/etc/my_init.d' is phusion baseimage specific;
+      # normally, entrypoint would be an arbitrary bind, in conjunction 
+      # with services:entrypoint (see above), but with baseimage we must:
+      # 1) put our script in /etc/my_init.d/
+      # 2) make sure it is named so it sorts as the last script in the directory
+      #    (baseimage has its own scripts there that must be executed first)
+      - "${COMPOSE_PROJECT_NAME}/entrypoint-baseimage.sh:/etc/my_init.d/98_poco-entrypoint.sh"
+      - "${COMPOSE_PROJECT_NAME}/test:/test"
+      - "${COMPOSE_PROJECT_NAME}/src:/src"
+      - "${COMPOSE_PROJECT_NAME}/out:/out"
+      - "${COMPOSE_PROJECT_NAME}/config.make:/config.make"
+      - "${COMPOSE_PROJECT_NAME}/config.build:/config.build"
