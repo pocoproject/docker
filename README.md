@@ -1,13 +1,18 @@
 Docker repository, for poco builds in docker containers.
 
-usage example:
+Prerequisites:
+
+- docker
+- docker-compose
+
+Usage example:
 ```
 ./configure --minimal --config=Linux-clang --compiler-version=4.0 --branch=develop
 Configured for Linux-clang
 ./run
 ```
 Configure works in a similar fashion like the POCO configure script (in fact, it is
-an extended version thereof).
+a modified/extended version thereof). Curently, only gcc and clang on linux are supported.
 
 The above commands will emit proper `config.make` and `config.build` files,
 then run the build inside a ubuntu-based container.
