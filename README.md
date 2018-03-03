@@ -34,7 +34,7 @@ Once created, container can be stopped/started/restarted/destroyed.:
 ./run [start|stop|restart|down]
 ```
 
-Container can also be [prevented from exiting](https://github.com/pocoproject/docker/blob/master/entrypoint-baseimage.sh#L98) after all is done, so it is possible to exec into it and try various things:
+Container can also be [prevented from exiting](https://github.com/pocoproject/docker/blob/master/entrypoint-baseimage.sh#L90-L96) after all is done, so it is possible to exec into it and try various things:
 
 ```
 docker exec -it [container_id] bash
