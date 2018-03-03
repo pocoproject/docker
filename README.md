@@ -17,6 +17,9 @@ Output from the build can be viewed in two ways:
 1) `docker logs -f [container_id]`
 2) `tail -F out/poco-develop-clang-4.0-Linux-clang.build.out`
 
+Docker logs will, obviously, be destroyed when the container is destroyed.
+The logs in `./out` directory, will however, persist.
+
 Source code is checked from github (into `./src` directory on the host filesystem),
 switched to indicated branch (`develop` is default) prior to buiding and runing tests.
 

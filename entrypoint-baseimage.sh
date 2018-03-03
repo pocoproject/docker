@@ -59,13 +59,11 @@ recreate_file $BLDOUTFILE
 TSTOUTFILE="$prefix.test.out"
 recreate_file $TSTOUTFILE
 
-$CXX --version | tee >($OUTFILE)
+$CXX --version | tee $OUTFILE
 
 export HOME="/root"
 export POCO_BASE=`pwd`
-CONFIG="./configure --config=$POCO_CONFIG --omit=$POCO_OMIT"
-echo "$CONFIG" | tee $CFGOUTFILE
-$CONFIG | tee $CFGOUTFILE 
+
 make -s -j4 clean | tee $BLDOUTFILE
 make -s -j4 distclean | tee $BLDOUTFILE
 make -s -j4 | tee $BLDOUTFILE
