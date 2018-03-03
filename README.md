@@ -12,7 +12,7 @@ Configured for Linux-clang
 ./run
 ```
 Configure works in a similar fashion like the POCO configure script (in fact, it is
-a modified/extended version thereof). Curently, only gcc and clang on windows are supported.
+a modified/extended version thereof). Curently, only gcc and clang on linux are supported.
 
 The above commands will emit proper `config.make` and `config.build` files,
 then run the build inside a ubuntu-based container.
