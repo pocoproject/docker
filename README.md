@@ -1,5 +1,10 @@
 Docker repository, for poco builds in docker containers.
 
+Prerequisites:
+
+- docker
+- docker-compose
+
 usage example:
 ```
 ./configure --minimal --config=Linux-clang --compiler-version=4.0 --branch=develop
