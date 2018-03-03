@@ -59,7 +59,7 @@ recreate_file $BLDOUTFILE
 TSTOUTFILE="$prefix.test.out"
 recreate_file $TSTOUTFILE
 
-$CXX --version | tee >($OUTFILE)
+$CXX --version | tee $OUTFILE
 
 export HOME="/root"
 export POCO_BASE=`pwd`
