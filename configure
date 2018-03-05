@@ -160,9 +160,9 @@ omitMinimal="Crypto NetSSL_OpenSSL Zip Data Data/SQLite Data/ODBC Data/MySQL Dat
 omitTypical="Data/ODBC Data/MySQL Data/PostgreSQL MongoDB Redis PDF CppParser"
 omit=$omitTypical
 branch="develop"
-compiler=""
-compilerxx=""
-compilerVersion=""
+compiler="gcc"
+compilerxx="g++"
+compilerVersion=5
 bits=64
 # parse arguments
 while [ $# -ge 1 ]; do

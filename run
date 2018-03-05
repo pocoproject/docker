@@ -19,7 +19,9 @@ if [ "$(docker ps -a | grep $POCO_CI_CONTAINER_NAME)" ]; then
 	docker rm -f $POCO_CI_CONTAINER_NAME
 fi
 
-export COMPOSE_PROJECT_NAME=`pwd`
+if [ COMPOSE_PROJECT_NAME == "" ]; then
+	export COMPOSE_PROJECT_NAME=`pwd`
+fi
 COMPOSE_FILE="$COMPOSE_PROJECT_NAME/docker-compose.yml"
 echo "docker-compose -f $COMPOSE_FILE $arg1 $arg2"
 docker-compose -f $COMPOSE_FILE $arg1 $arg2
