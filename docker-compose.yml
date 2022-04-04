@@ -1,11 +1,20 @@
 version: '2'
 
+# if this error encountered on run:
+#
+# cgroups: cannot found cgroup mount destination: unknown
+#
+# do this:
+#
+# sudo mkdir /sys/fs/cgroup/systemd
+# sudo mount -t cgroup -o none,name=systemd cgroup /sys/fs/cgroup/systemd
+
 services:
 
   poco_ci:
     # stripped-down, docker-optimized ubuntu
     # see https://github.com/phusion/baseimage-docker
-    image: phusion/baseimage:0.10.0
+    image: phusion/baseimage:focal-1.2.0
     container_name: ${POCO_CI_CONTAINER_NAME}
     # disabled for baseimage, use this for other images
     # (see note in volumes below)
@@ -19,6 +28,7 @@ services:
       POCO_GIT_BRANCH:        ${POCO_GIT_BRANCH}
       POCO_OMIT:              ${POCO_OMIT}
       POCO_CONFIG:            ${POCO_CONFIG}
+      OPENSSL_GIT_BRANCH:     ${POCO_OPENSSL_GIT_BRANCH}
 
 #    network_mode: "host"
 

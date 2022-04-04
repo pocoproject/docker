@@ -22,11 +22,7 @@ Options:
     Available configurations are:
 
     "Linux"
-    "Linux32-gcc"
-    "Linux64-gcc"
     "Linux-clang"
-    "Linux32-clang"
-    "Linux64-clang"
 
   --prefix=<install_prefix>
     Use the given install directory for make install.
@@ -135,6 +131,10 @@ Options:
   --compiler-version
     Use specified compiler version.
 
+  --openssl-branch
+    Use specified openssl branch; if not specified, the distro
+    openssl package is used.
+
 ENDHELP
 }
 
@@ -164,6 +164,7 @@ compiler="gcc"
 compilerxx="g++"
 compilerVersion=5
 bits=64
+openSSLBranch=""
 # parse arguments
 while [ $# -ge 1 ]; do
 	case "$1" in
@@ -253,6 +254,9 @@ while [ $# -ge 1 ]; do
 	--compiler-version=*)
 		compilerVersion="`echo ${1} | awk '{print substr($0,20)}'`" ;;
 
+	--openssl-branch=*)
+		openSSLBranch="`echo ${1} | awk '{print substr($0,18)}'`" ;;
+
 	--help)
  		showhelp
  		exit 0
@@ -276,19 +280,7 @@ case "$config" in
 	Linux)
 		compiler="gcc"; compilerxx="g++" ;;
 
-	Linux32-gcc)
-		compiler="gcc"; compilerxx="g++"; bits=32 ;;
-
-	Linux64-gcc)
-		compiler="gcc"; compilerxx="g++" ;;
-
 	Linux-clang)
-		compiler="clang"; compilerxx="clang++" ;;
-
-	Linux32-clang)
-		compiler="clang"; compilerxx="clang++"; bits=32 ;;
-
-	Linux64-clang)
 		compiler="clang"; compilerxx="clang++" ;;
 
 	*)
@@ -322,13 +314,16 @@ echo "POCO_CC_COMPILER=$compiler" >>$build/config.make
 echo "POCO_CXX_COMPILER=$compilerxx" >>$build/config.make
 echo "POCO_COMPILER_VERSION=$compilerVersion" >>$build/config.make
 echo "POCO_BITS=$bits" >>$build/config.make
+if [ "" != "$openSSLBranch" ] ; then
+	echo "POCO_OPENSSL_GIT_BRANCH=$openSSLBranch" >>$build/config.make
+fi
 if [ -n "$prefix" ] ; then
 	echo "POCO_PREFIX=$prefix" >>$build/config.make
 fi
 echo "OMIT='$omit'" >>$build/config.make
 omit=`echo "$omit" | tr ' ' ','`
 echo "POCO_OMIT=$omit" >>$build/config.make
-echo "POCO_CI_CONTAINER_NAME=poco-${branch}-${compiler}-${compilerVersion}-${config}" >>$build/config.make
+echo "POCO_CI_CONTAINER_NAME=poco-${branch}-${compiler}-${compilerVersion}-${config}" | tr / _ >>$build/config.make
 if [ -n "$stdcxx_base" ] ; then
 	echo "STDCXX_BASE=$stdcxx_base" >>$build/config.make
 fi
@@ -355,6 +350,7 @@ cat <<__EOF__ >>$build/config.make
 export POCO_CONFIG
 export POCO_FLAGS
 export POCO_GIT_BRANCH
+export POCO_OPENSSL_GIT_BRANCH
 export POCO_CC_COMPILER
 export POCO_CXX_COMPILER
 export POCO_COMPILER_VERSION
